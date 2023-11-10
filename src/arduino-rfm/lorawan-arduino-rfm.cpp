@@ -44,7 +44,7 @@ bool LoRaWANClass::init(void)
     // Lora Setting Class
     dev_class = CLASS_A;
     // Random seed
-    randomSeed(analogRead(0));
+    randomSeed(analogRead(6));
 
     // Status
     RFM_Command_Status = NO_RFM_COMMAND;
