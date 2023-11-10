@@ -84,7 +84,7 @@ bool LoRaWANClass::init(void)
     LoRa_Settings.Mote_Class = 0x00; //0x00 is type A, 0x01 is type C
 
     // Rx
-#if defined(AS_923) || defined(AS_923_2) 
+#if defined(AS_923) || defined(AS_923_2)
     LoRa_Settings.Datarate_Rx = 0x02; //set to SF10 BW 125 kHz
 #elif defined(EU_868)
     LoRa_Settings.Datarate_Rx = 0x03;                //set to SF9 BW 125 kHz
@@ -395,7 +395,7 @@ int LoRaWANClass::readData(char *outBuff)
 
 /**
  * Get ACK flag from downlink packet
- * 
+ *
  * @return true in case of ACK received
  */
 bool LoRaWANClass::readAck(void)
@@ -465,9 +465,9 @@ void LoRaWANClass::randomChannel()
 #elif defined(AS_923_2)
     freq_idx = random(0, 8);
 	LoRa_Settings.Channel_Rx=freq_idx;      // same rx and tx channel
-#elif defined(EU_868)    
+#elif defined(EU_868)
     freq_idx = random(0,8);
-    LoRa_Settings.Channel_Rx=freq_idx;      // same rx and tx channel 
+    LoRa_Settings.Channel_Rx=freq_idx;      // same rx and tx channel
 #else // US_915 or AU_915
     freq_idx = random(0, 8);
     LoRa_Settings.Channel_Rx = freq_idx + 0x08;

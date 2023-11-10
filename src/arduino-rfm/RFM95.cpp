@@ -33,7 +33,7 @@
 
 /**
  *  Lora Frequencies
- *    Tested on all subbands in US915 
+ *    Tested on all subbands in US915
  */
 #if defined(US_915)
   #if defined(SUBND_0)//[902.3 - 903.7] MHz
@@ -252,11 +252,11 @@
     { 0xE6, 0x59, 0xC0 }, //Channel [0], 921.4 MHz / 61.035 Hz = 15096256 = 0xE659C0 - Default OTAA - RX2
     { 0xE6, 0x66, 0x8D }, //Channel [1], 921.6 MHz / 61.035 Hz = 15099533 = 0xE6668D - Default OTAA
     { 0xE6, 0x73, 0x5A }, //Channel [2], 921.8 MHz / 61.035 Hz = 15102810 = 0xE6735A
-    { 0xE6, 0x80, 0x27 }, //Channel [3], 922.0 MHz / 61.035 Hz = 15106087 = 0xE68027 
-    { 0xE6, 0x8C, 0xF3 }, //Channel [4], 922.2 MHz / 61.035 Hz = 15109363 = 0xE68CF3 
-    { 0xE6, 0x99, 0xC0 }, //Channel [5], 922.4 MHz / 61.035 Hz = 15112640 = 0xE699C0 
+    { 0xE6, 0x80, 0x27 }, //Channel [3], 922.0 MHz / 61.035 Hz = 15106087 = 0xE68027
+    { 0xE6, 0x8C, 0xF3 }, //Channel [4], 922.2 MHz / 61.035 Hz = 15109363 = 0xE68CF3
+    { 0xE6, 0x99, 0xC0 }, //Channel [5], 922.4 MHz / 61.035 Hz = 15112640 = 0xE699C0
     { 0xE6, 0xA6, 0x8D }, //Channel [6], 922.6 MHz / 61.035 Hz = 15115917 = 0xE6A68D
-    { 0xE6, 0xB3, 0x5A }, //Channel [7], 922.8 MHz / 61.035 Hz = 15119194 = 0xE6B35A 
+    { 0xE6, 0xB3, 0x5A }, //Channel [7], 922.8 MHz / 61.035 Hz = 15119194 = 0xE6B35A
   };
 #elif defined(EU_868)
   static const PROGMEM unsigned char LoRa_Frequency[9][3] = {//[868.1 - 867.9] MHz
@@ -268,7 +268,7 @@
     { 0xD8, 0xE0, 0x24 }, //Channel [5], 867.5 MHz / 61.035 Hz = 14213156 = 0xD8E024
     { 0xD8, 0xEC, 0xF1 }, //Channel [6], 867.7 MHz / 61.035 Hz = 14216433 = 0xD8ECF1
     { 0xD8, 0xF9, 0xBE }, //Channel [7], 867.9 MHz / 61.035 Hz = 14219710 = 0xD8F9BE
-    { 0xD9, 0x61, 0xBE }, // RX2 Receive channel 869.525 MHz / 61.035 Hz = 14246334 = 0xD961BE    
+    { 0xD9, 0x61, 0xBE }, // RX2 Receive channel 869.525 MHz / 61.035 Hz = 14246334 = 0xD961BE
   };
 #endif
 
@@ -288,7 +288,7 @@ static unsigned char RFM_Read(unsigned char RFM_Address)
 
   //Add transactions in Read and Write methods
   SPI.beginTransaction(SPISettings(4000000,MSBFIRST,SPI_MODE0));
-  
+
   //Set NSS pin low to start SPI communication
   digitalWrite(RFM_pins.CS,LOW);
 
@@ -315,10 +315,10 @@ static unsigned char RFM_Read(unsigned char RFM_Address)
 }
 /********************************************************************************************
 * Description : Change Spread Factor and Band Width
-* 
+*
 * Arguments:    _SF = {6,7,8,9,10,11,12}
 *               _BW = {0x00 -> 7.8khz   , 0x01 -> 10.4khz, 0x02 -> 15.6khz, 0x03 -> 20.8khz,
-*                      0x04 -> 31.25khz , 0x05 -> 41.7khz, 0x06 -> 62.5khz, 0x07 -> 125khz, 
+*                      0x04 -> 31.25khz , 0x05 -> 41.7khz, 0x06 -> 62.5khz, 0x07 -> 125khz,
 *                      0x08 -> 250khz   , 0x09 -> 500khz}
 ********************************************************************************************/
 static void RFM_change_SF_BW(unsigned char _SF, unsigned char _BW)
@@ -328,13 +328,13 @@ static void RFM_change_SF_BW(unsigned char _SF, unsigned char _BW)
 
   #ifdef EU_868
   if(_SF>10)
-    RFM_Write(RFM_REG_MODEM_CONFIG3, 0b1100); //Low datarate optimization on AGC auto on 
+    RFM_Write(RFM_REG_MODEM_CONFIG3, 0b1100); //Low datarate optimization on AGC auto on
   else
-    RFM_Write(RFM_REG_MODEM_CONFIG3, 0b0100); //Mobile node, low datarate optimization on AGC acorging to register LnaGain  
+    RFM_Write(RFM_REG_MODEM_CONFIG3, 0b0100); //Mobile node, low datarate optimization on AGC acorging to register LnaGain
   #else
   RFM_Write(RFM_REG_MODEM_CONFIG3, 0b0100); //Mobile node, low datarate optimization on AGC acorging to register LnaGain
   #endif
-    
+
 }
 /*
 *****************************************************************************************
@@ -463,15 +463,15 @@ static void RFM_Change_Channel(unsigned char Channel)
       RFM_Write(RFM_REG_FR_MSB + i, pgm_read_byte(&(LoRa_Frequency[0][i])));
 #elif defined(EU_868)
   // in EU_868 v1.02 uses same freq for uplink and downlink
-  if (Channel <= 0x08) 
+  if (Channel <= 0x08)
     for(unsigned char i = 0 ; i < 3 ; ++i)
-      RFM_Write(RFM_REG_FR_MSB + i, pgm_read_byte(&(LoRa_Frequency[Channel][i])));  
+      RFM_Write(RFM_REG_FR_MSB + i, pgm_read_byte(&(LoRa_Frequency[Channel][i])));
 #else   //US915 or AU_915
   if (Channel <= 0x07)
     for(unsigned char i = 0 ; i < 3 ; ++i)
       RFM_Write(RFM_REG_FR_MSB + i, pgm_read_byte(&(LoRa_TX_Freq[Channel][i])));
   else if (Channel >= 0x08 && Channel <= 0x0F)
-    for(unsigned char i = 0 ; i < 3 ; ++i) { 
+    for(unsigned char i = 0 ; i < 3 ; ++i) {
       RFM_Write(RFM_REG_FR_MSB + i, pgm_read_byte(&(LoRa_RX_Freq[Channel - 0x08][i])));
     }
 #endif
@@ -484,7 +484,7 @@ static void RFM_Change_Channel(unsigned char Channel)
 */
 bool RFM_Init()
 {
-  
+
   uint8_t ver = RFM_Read(0x42);
   if(ver!=18){
     return 0;
@@ -495,7 +495,7 @@ bool RFM_Init()
 
   //Wait until RFM is in sleep mode
   delay(50);
- 
+
   //Set RFM in LoRa mode
   //DON'T USE Switch mode function
   RFM_Write(RFM_REG_OP_MODE ,RFM_MODE_LORA);
@@ -516,7 +516,7 @@ bool RFM_Init()
   //Rx Timeout set to 37 symbols
   RFM_Write(RFM_REG_SYM_TIMEOUT_LSB, 0x25);
   //RFM_Write(RFM_REG_SYM_TIMEOUT_LSB, 0x05);
-  
+
   //Preamble length set to 8 symbols
   //0x0008 + 4 = 12
   RFM_Write(RFM_REG_PREAMBLE_MSB,0x00);
@@ -654,7 +654,7 @@ void RFM_Send_Package(sBuffer *RFM_Tx_Package, sSettings *LoRa_Settings)
 message_t RFM_Single_Receive(sSettings *LoRa_Settings)
 {
   message_t Message_Status = NO_MESSAGE;
-  
+
   //Change DIO 0 back to RxDone
   RFM_Write(RFM_REG_DIO_MAPPING1, 0x00);
 
@@ -750,7 +750,7 @@ message_t RFM_Get_Package(sBuffer *RFM_Rx_Package)
   //Get interrupt register
   RFM_Interrupts = RFM_Read(0x12);
 
- 
+
   if((RFM_Interrupts & 0x40)){ //IRQ_RX_DONE_MASK
     if((RFM_Interrupts & 0x20) != 0x20)  //Check CRC
     {
