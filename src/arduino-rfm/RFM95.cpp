@@ -557,7 +557,7 @@ void RFM_Set_Tx_Power(int level, int outputPin)
 
       // High Power +20 dBm Operation (Semtech SX1276/77/78/79 5.4.3.)
       RFM_Write(RFM_REG_PA_DAC, 0x87);
-      RFM_Set_OCP(140);
+      RFM_Set_OCP(240);
     } else {
       if (level < 2) {
         level = 2;
