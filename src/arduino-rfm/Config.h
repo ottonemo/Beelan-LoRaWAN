@@ -4,7 +4,7 @@
 // To define your LoRaWAN frequency band here
 //#define AS_923
 //#define AS_923_2
-//#define EU_868
+#define EU_868
 //#define US_915
 //#define AU_915
 
