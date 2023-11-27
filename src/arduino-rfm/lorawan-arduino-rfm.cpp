@@ -374,13 +374,17 @@ void LoRaWANClass::setTxPower1(unsigned char power_idx)
     RFM_Write(RFM_REG_PA_CONFIG, RFM_Data);
 }
 
-int LoRaWANClass::readData(char *outBuff)
+int LoRaWANClass::readData(char *outBuff, unsigned char buf_size)
 {
     int res = 0;
     //If there is new data
     if (Rx_Status == NEW_RX)
     {
-        res = Buffer_Rx.Counter;
+        if (Buffer_Rx.Counter > (buf_size - 1)) {
+            res = buf_size - 1;
+        } else {
+            res = Buffer_Rx.Counter;
+        }
         memset(outBuff, 0x00, res + 1);
         memcpy(outBuff, Buffer_Rx.Data, res);
 

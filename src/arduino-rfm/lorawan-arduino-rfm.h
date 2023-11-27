@@ -80,7 +80,7 @@ public:
     void setTxPower1(unsigned char power_idx);
     void setTxPower(int level, txPin_t pinTx);
     int getRssi();
-    int readData(char *outBuff);
+    int readData(char *outBuff, unsigned char buf_size);
     bool readAck(void);
     void update(void);
 
