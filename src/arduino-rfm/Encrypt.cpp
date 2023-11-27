@@ -253,7 +253,7 @@ void Calculate_MIC(sBuffer *Buffer, unsigned char *Key, sLoRa_Message *Message)
 	//Calculate number of Blocks and blocksize of last block
 	Number_of_Blocks = Buffer->Counter / 16;
 	Incomplete_Block_Size = Buffer->Counter % 16;
-	
+
     //if there is an incomplete block at the end add 1 to the number of blocks
 	if(Incomplete_Block_Size != 0)
 	{

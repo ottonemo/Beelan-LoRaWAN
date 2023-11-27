@@ -53,7 +53,7 @@ static const unsigned char S_Table[16][16] = {
 /*
 *****************************************************************************************
 * Title         : AES_Add_Round_Key
-* Description	: 
+* Description	:
 *****************************************************************************************
 */
 static void AES_Add_Round_Key(unsigned char *Round_Key, unsigned char (*State)[4])
@@ -72,7 +72,7 @@ static void AES_Add_Round_Key(unsigned char *Round_Key, unsigned char (*State)[4
 /*
 *****************************************************************************************
 * Title         : AES_Sub_Byte
-* Description	: 
+* Description	:
 *****************************************************************************************
 */
 static unsigned char AES_Sub_Byte(unsigned char Byte)
@@ -90,7 +90,7 @@ static unsigned char AES_Sub_Byte(unsigned char Byte)
 /*
 *****************************************************************************************
 * Title         : AES_Shift_Rows
-* Description	: 
+* Description	:
 *****************************************************************************************
 */
 static void AES_Shift_Rows(unsigned char (*State)[4])
@@ -123,15 +123,15 @@ static void AES_Shift_Rows(unsigned char (*State)[4])
 /*
 *****************************************************************************************
 * Title         : AES_Mix_Collums
-* Description	: 
+* Description	:
 *****************************************************************************************
 */
 static void AES_Mix_Collums(unsigned char (*State)[4])
 {
 	unsigned char Row,Collum;
 	unsigned char a[4], b[4];
-    
-    
+
+
 	for(Collum = 0; Collum < 4; Collum++)
 	{
 		for(Row = 0; Row < 4; Row++)
@@ -144,7 +144,7 @@ static void AES_Mix_Collums(unsigned char (*State)[4])
 				b[Row] ^= 0x1B;
 			}
 		}
-        
+
 		State[0][Collum] = b[0] ^ a[1] ^ b[1] ^ a[2] ^ a[3];
 		State[1][Collum] = a[0] ^ b[1] ^ a[2] ^ b[2] ^ a[3];
 		State[2][Collum] = a[0] ^ a[1] ^ b[2] ^ a[3] ^ b[3];
@@ -155,7 +155,7 @@ static void AES_Mix_Collums(unsigned char (*State)[4])
 /*
 *****************************************************************************************
 * Title         : AES_Calculate_Round_Key
-* Description	: 
+* Description	:
 *****************************************************************************************
 */
 static void AES_Calculate_Round_Key(unsigned char Round, unsigned char *Round_Key)
@@ -163,21 +163,21 @@ static void AES_Calculate_Round_Key(unsigned char Round, unsigned char *Round_Ke
 	unsigned char i, j, b, Rcon;
 	unsigned char Temp[4];
 
-    
+
     //Calculate Rcon
 	Rcon = 0x01;
 	while(Round != 1)
 	{
 		b = Rcon & 0x80;
 		Rcon = Rcon << 1;
-        
+
 		if(b == 0x80)
 		{
 			Rcon ^= 0x1b;
 		}
 		Round--;
 	}
-    
+
 	//  Calculate first Temp
 	//  Copy laste byte from previous key and substitute the byte, but shift the array contents around by 1.
     Temp[0] = AES_Sub_Byte( Round_Key[12 + 1] );
@@ -202,7 +202,7 @@ static void AES_Calculate_Round_Key(unsigned char Round, unsigned char *Round_Ke
 /*
 *****************************************************************************************
 * Title         : AES_Encrypt
-* Description	: 
+* Description	:
 *****************************************************************************************
 */
 void AES_Encrypt(unsigned char *Data, unsigned char *Key)
@@ -259,7 +259,7 @@ void AES_Encrypt(unsigned char *Data, unsigned char *Key)
 			State[Row][Column] = AES_Sub_Byte(State[Row][Column]);
 		}
 	}
-    
+
 	//  Shift rows
 	AES_Shift_Rows(State);
 
@@ -280,5 +280,5 @@ void AES_Encrypt(unsigned char *Data, unsigned char *Key)
 } // AES_Encrypt
 
 
- 
+
 

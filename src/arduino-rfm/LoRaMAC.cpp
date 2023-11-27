@@ -68,14 +68,14 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 	static const unsigned int Receive_Delay_2 = 2000;    // Receive_Delay_2 >= Receive_Delay_1 + RX1_Window
 	static const unsigned int RX1_Window      = 1000;
 	static const unsigned int RX2_Window      = 1000;
-	
+
 	unsigned long prevTime = 0;
 	unsigned char rx1_ch = LoRa_Settings->Channel_Rx;
-	#ifdef US_915   
+	#ifdef US_915
     unsigned char rx1_dr = LoRa_Settings->Datarate_Tx+10;
-	#elif defined(AU_915)    
+	#elif defined(AU_915)
     unsigned char rx1_dr = LoRa_Settings->Datarate_Tx+10;
-	#elif defined(EU_868)   
+	#elif defined(EU_868)
     unsigned char rx1_dr = LoRa_Settings->Datarate_Tx;
 	#else // AS_923 and AS_923_2
 	unsigned char rx1_dr = LoRa_Settings->Datarate_Tx;
@@ -86,13 +86,13 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 		#if (SAMR34)
 		pinMode(RFM_SWITCH,OUTPUT);
 		digitalWrite(RFM_SWITCH,0); //Rf switch inside RAK module change to Tx
-		#endif	
+		#endif
 		//Lora send data
     	LORA_Send_Data(Data_Tx, Session_Data, LoRa_Settings);
 		prevTime = millis();
-		
+
 		#if (SAMR34)
-		digitalWrite(RFM_SWITCH,1); //Rf switch inside RAK module change to Rx 
+		digitalWrite(RFM_SWITCH,1); //Rf switch inside RAK module change to Rx
 		#endif
 
 		// Class C open RX2 immediately after sending data
@@ -101,7 +101,7 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 			LoRa_Settings->Channel_Rx = 0x08;    // set Rx2 channel 923.3 MHZ
 			LoRa_Settings->Datarate_Rx = SF12BW500;   //set RX2 datarate 12
 			#elif defined(EU_868)
-			LoRa_Settings->Channel_Rx = CHRX2;    // set Rx2 channel 923.3 MHZ 
+			LoRa_Settings->Channel_Rx = CHRX2;    // set Rx2 channel 923.3 MHZ
 			LoRa_Settings->Datarate_Rx = SF12BW125;   //set RX2 datarate 12
 			#elif defined(AS_923) || defined(AS_923_2)
 			LoRa_Settings->Channel_Rx = 0x00;    // set Rx2 channel 923.2 (AS_923) or 921.4 (AS_923_2)
@@ -119,10 +119,10 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 		do{
 			yield(); // Do nothing during rx1 window delay
 		}while(millis() - prevTime < Receive_Delay_1);
-		
+
 		//RX1 Window
 		//Return to datarate and channel for RX1
-		LoRa_Settings->Channel_Rx = rx1_ch;    // set RX1 channel 
+		LoRa_Settings->Channel_Rx = rx1_ch;    // set RX1 channel
 		LoRa_Settings->Datarate_Rx = rx1_dr;   // set RX1 datarate
 
 		do{
@@ -130,7 +130,7 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 		}while(millis() - prevTime < Receive_Delay_1 + RX1_Window);
 		//Return if message on RX1
 		if (Data_Rx->Counter>0){
-			return;			
+			return;
 		}
 
 		// Class C open RX2 immediately after first rx window
@@ -139,7 +139,7 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 			LoRa_Settings->Channel_Rx = 0x08;    // set Rx2 channel 923.3 MHZ
 			LoRa_Settings->Datarate_Rx = SF12BW500;   //set RX2 datarate 12
 			#elif defined(EU_868)
-			LoRa_Settings->Channel_Rx = CHRX2;    // set Rx2 channel 923.3 MHZ 
+			LoRa_Settings->Channel_Rx = CHRX2;    // set Rx2 channel 923.3 MHZ
 			LoRa_Settings->Datarate_Rx = SF12BW125;   //set RX2 datarate 12
 			#elif defined(AS_923) || defined(AS_923_2)
 			LoRa_Settings->Channel_Rx = 0x00;    // set Rx2 channel 923.2 (AS_923) or 921.4 (AS_923_2)
@@ -159,12 +159,12 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 		}while(millis() - prevTime < Receive_Delay_2);
 
 		//RX2 Window
-		//Configure datarate and channel for RX2			
+		//Configure datarate and channel for RX2
 		#ifdef US_915
 		LoRa_Settings->Channel_Rx = 0x08;    // set Rx2 channel 923.3 MHZ
 		LoRa_Settings->Datarate_Rx = SF12BW500;   //set RX2 datarate 12
 		#elif defined(EU_868)
-		LoRa_Settings->Channel_Rx = CHRX2;    // set Rx2 channel 923.3 MHZ 
+		LoRa_Settings->Channel_Rx = CHRX2;    // set Rx2 channel 923.3 MHZ
 		LoRa_Settings->Datarate_Rx = SF12BW125;   //set RX2 datarate 12
 		#elif defined(AS_923) || defined(AS_923_2)
 		LoRa_Settings->Channel_Rx = 0x00;    // set Rx2 channel 923.2 (AS_923) or 921.4 (AS_923_2)
@@ -173,15 +173,15 @@ void LORA_Cycle(sBuffer *Data_Tx, sBuffer *Data_Rx, RFM_command_t *RFM_Command, 
 		LoRa_Settings->Channel_Rx = 0x08;    // set Rx2 channel 923.3 MHZ
 		LoRa_Settings->Datarate_Rx = SF12BW500;   //set RX2 datarate 12
 		#endif
-		
-		//Receive Data RX2 
+
+		//Receive Data RX2
 		do{
 			LORA_Receive_Data(Data_Rx, Session_Data, OTAA_Data, Message_Rx, LoRa_Settings);
 		}while(millis() - prevTime < Receive_Delay_2 + RX2_Window);
 
 		//Return if message on RX2
 		if (Data_Rx->Counter>0){
-			return;			
+			return;
 		}
 	}
 }
@@ -351,7 +351,7 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
 	//If it is a type A device switch RFM to single receive
 	if(LoRa_Settings->Mote_Class == CLASS_A)
 	{
-		Message_Status = RFM_Single_Receive(LoRa_Settings);  
+		Message_Status = RFM_Single_Receive(LoRa_Settings);
 	}
 	else
 	{
@@ -374,7 +374,7 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
 	}
 	//if CRC ok breakdown package
 	if(Message_Status == CRC_OK)
-	{	
+	{
 		//Get MAC_Header
     	Message->MAC_Header = RFM_Data[0];
 
@@ -566,7 +566,7 @@ void LoRa_Send_JoinReq(sLoRa_OTAA *OTAA_Data, sSettings *LoRa_Settings)
 	//Set length of package
 	RFM_Package.Counter = 19;
 
-	//Get MIC	
+	//Get MIC
 	Calculate_MIC(&RFM_Package, OTAA_Data->AppKey, &Message);
 
 	//Load MIC in package
@@ -593,12 +593,12 @@ bool LORA_join_Accept(sBuffer *Data_Rx,sLoRa_Session *Session_Data, sLoRa_OTAA *
 	message_t Message_Status = NO_MESSAGE;
 
 	//RFM to single receive
-	Message_Status = RFM_Single_Receive(LoRa_Settings);  
+	Message_Status = RFM_Single_Receive(LoRa_Settings);
 	//If there is a message received get the data from the RFM
 	if(Message_Status == NEW_MESSAGE)
 		Message_Status = RFM_Get_Package(&RFM_Package);
-	
-	#if defined(ESP8266) || defined(ESP32) 
+
+	#if defined(ESP8266) || defined(ESP32)
 	yield();
 	#endif
 
@@ -610,7 +610,7 @@ bool LORA_join_Accept(sBuffer *Data_Rx,sLoRa_Session *Session_Data, sLoRa_OTAA *
 
 		//Join Accept message
 		if(Message->MAC_Header == 0x20)
-		{	
+		{
 			//Copy the data into the data array
 			for(i = 0x00; i < RFM_Package.Counter; i++)
 				Data_Rx->Data[i] = RFM_Package.Data[i];
@@ -702,7 +702,7 @@ bool LORA_join_Accept(sBuffer *Data_Rx,sLoRa_Session *Session_Data, sLoRa_OTAA *
 				for(byte i = 0; i < 16 ;++i)
 					Serial.print(Session_Data->AppSKey[i],HEX);
 				Serial.println();
-#endif	
+#endif
 				joinStatus = true;
 			}
 		}

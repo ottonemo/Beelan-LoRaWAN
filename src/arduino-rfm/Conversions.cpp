@@ -62,7 +62,7 @@ void Hex2ASCII(unsigned char ASCII, unsigned char *Upper_Nibble, unsigned char *
     *Lower_Nibble = *Lower_Nibble + 0x30;
   }
 }
-    
+
 unsigned char ASCII2Hex(unsigned char Upper_Nibble, unsigned char Lower_Nibble)
 {
 
@@ -73,7 +73,7 @@ unsigned char ASCII2Hex(unsigned char Upper_Nibble, unsigned char Lower_Nibble)
     {
         ASCII =(Upper_Nibble - '0') * 16;
     }
-    
+
     if(Upper_Nibble >= 'A' && Upper_Nibble <= 'F')
     {
         ASCII = (Upper_Nibble - 'A' + 10) * 16;
@@ -83,13 +83,13 @@ unsigned char ASCII2Hex(unsigned char Upper_Nibble, unsigned char Lower_Nibble)
     {
         ASCII = (Upper_Nibble - 'a' + 10) * 16;
     }
-    
+
     // Low Nibble
     if(Lower_Nibble >= '0' && Lower_Nibble <= '9')
     {
         ASCII = ASCII + (Lower_Nibble - '0');
     }
-    
+
     if(Lower_Nibble >= 'A' && Lower_Nibble <= 'F')
     {
         ASCII = ASCII + (Lower_Nibble - 'A' + 10);
@@ -98,10 +98,10 @@ unsigned char ASCII2Hex(unsigned char Upper_Nibble, unsigned char Lower_Nibble)
     if(Lower_Nibble >= 'a' && Lower_Nibble <= 'f')
     {
         ASCII = ASCII + (Lower_Nibble - 'a' + 10);
-    } 
+    }
 
   return ASCII;
-  
+
 }
 
 
