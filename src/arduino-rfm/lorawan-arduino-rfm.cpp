@@ -374,7 +374,7 @@ void LoRaWANClass::setTxPower1(unsigned char power_idx)
     RFM_Write(RFM_REG_PA_CONFIG, RFM_Data);
 }
 
-int LoRaWANClass::readData(char *outBuff, unsigned char buf_size)
+int LoRaWANClass::readData(char *outBuff, unsigned char buf_size, unsigned char* fport)
 {
     int res = 0;
     //If there is new data
@@ -392,6 +392,10 @@ int LoRaWANClass::readData(char *outBuff, unsigned char buf_size)
         Buffer_Rx.Counter = 0x00;
 
         Rx_Status = NO_RX;
+
+        if (fport != NULL) {
+            *fport = Message_Rx.Frame_Port;
+        }
     }
 
     return res;
