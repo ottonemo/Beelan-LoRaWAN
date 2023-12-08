@@ -374,9 +374,13 @@ void LoRaWANClass::setTxPower1(unsigned char power_idx)
     RFM_Write(RFM_REG_PA_CONFIG, RFM_Data);
 }
 
+#define MaybePrintf(...) do { if (Serial.availableForWrite()) { Serial.printf(__VA_ARGS__); } } while(0);
+
 int LoRaWANClass::readData(char *outBuff, unsigned char buf_size, unsigned char* fport)
 {
     int res = 0;
+
+
     //If there is new data
     if (Rx_Status == NEW_RX)
     {
@@ -453,9 +457,11 @@ void LoRaWANClass::update(void)
         //Receive
         if (digitalRead(RFM_pins.DIO0) == HIGH)
         {
+            MaybePrintf("DI0 is high\n");
             LORA_Receive_Data(&Buffer_Rx, &Session_Data, &OTAA_Data, &Message_Rx, &LoRa_Settings);
             if (Buffer_Rx.Counter != 0x00)
             {
+                MaybePrintf("Counter: %d\n", Buffer_Rx.Counter);
                 Rx_Status = NEW_RX;
             }
         }

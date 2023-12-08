@@ -317,6 +317,8 @@ void LORA_Send_Data(sBuffer *Data_Tx, sLoRa_Session *Session_Data, sSettings *Lo
 	}
 }
 
+#define MaybePrintf(...) do { if (Serial.availableForWrite()) { Serial.printf(__VA_ARGS__); } } while(0);
+
 
 /*
 *****************************************************************************************
@@ -378,9 +380,13 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
 		//Get MAC_Header
     	Message->MAC_Header = RFM_Data[0];
 
+        MaybePrintf("CRC OK\n");
+
 		//Data message
 		if(Message->MAC_Header == 0x40 || Message->MAC_Header == 0x60 || Message->MAC_Header == 0x80 || Message->MAC_Header == 0xA0)
 		{
+            MaybePrintf("data message\n");
+
 			//Get device address from received data
 			Message->DevAddr[0] = RFM_Data[4];
 			Message->DevAddr[1] = RFM_Data[3];
@@ -447,7 +453,7 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
 			//Send the data to USB
 			if(Message_Status == ADDRESS_OK)
 			{
-
+                MaybePrintf("Address OK\n");
 				Data_Location = 8;
 
 				//Get length of frame options field
@@ -459,6 +465,7 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
 				//Check if ther is data in the package
 				if(RFM_Package.Counter == Data_Location)
 				{
+                    MaybePrintf("no data in package apparently\n");
 					Data_Rx->Counter = 0x00;
 				}
 				else
@@ -493,13 +500,16 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
 					Message_Status = MESSAGE_DONE;
 				}
 			}
-		}
+        }
 
 		if(Message_Status == WRONG_MESSAGE)
 		{
+            MaybePrintf("wrong message\n");
 			Data_Rx->Counter = 0x00;
  		}
-	}
+    } else {
+        //MaybePrintf("CRC not OK\n");
+    }
 }
 /*
 *****************************************************************************************
