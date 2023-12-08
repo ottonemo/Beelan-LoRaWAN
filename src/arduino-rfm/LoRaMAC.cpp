@@ -555,6 +555,7 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
             //Compare MIC
 			for(i = 0x00; i < 4; i++)
 			{
+                MaybePrintf("MIC, %x ~= %x\n", RFM_Data[RFM_Package.Counter + i], Message->MIC[i]);
 				if(RFM_Data[RFM_Package.Counter + i] == Message->MIC[i])
 				{
 					MIC_Check++;
@@ -578,8 +579,10 @@ void LORA_Receive_Data(sBuffer *Data_Rx, sLoRa_Session *Session_Data, sLoRa_OTAA
       		{
 			      for(i = 0x00; i < 4; i++)
 			      {
+                    MaybePrintf("Addr, %x ~= %x\n", Session_Data->DevAddr[i], Message->DevAddr[i]);
 					if(Session_Data->DevAddr[i] == Message->DevAddr[i])
 			        {
+
 						Address_Check++;
 			        }
 			      }
